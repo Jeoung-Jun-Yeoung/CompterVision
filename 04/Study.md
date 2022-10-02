@@ -27,3 +27,43 @@ OpenCv에서는 VideoCapture라는 하나의 클래스를 이용
 python에서는 간단하게 사용이 가능하지만 isOpende()를 통해 제대로 호출이 되었는지 확인은 필요
 
 - cap.get() - 현재 열려 있는 카메라 장치 또는 동영상 파일로부터 여러가지 정보를 받아오기 위해 사용
+
+<pre>
+<code>
+
+import cv2 as cv
+
+cap = cv.VideoCapture(0)
+
+if not cap.isOpende():
+    print("Camera open Failed!")
+    exit()
+
+print("Frame width:",int(cap.get(cv.CAP_PROP_FRAME_WIDTH)))
+print("Frame hieight:",int(cap.get(cv.CAP_PROP_FRAME_HEIGHT)))
+</code>
+</pre>
+
+filename 인자에는 동영상 파일 이름을 전달
+
+- .avi, .mpg, .mp4 등의 확장자를 갖는 파일
+- 현재 실행 폴더에 동영상 파일이 있으면 video.mp4 형태로 파일 이름만 지정하면 됨
+- 다른폴더에 동영상 파일이 있다면 절대경로 혹은 상대경로를 추가하여 파일 이름을 지정
+
+<pre>
+<code>
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    
+    inversed = ~frame
+    cv.imshow("frame", frame)
+    cv.imshow("inversed", inversed)
+
+    if cv.waitKey(10) == 27:
+        break
+    
+    cv.destroyAllwindows()
+</code>
+</pre>
