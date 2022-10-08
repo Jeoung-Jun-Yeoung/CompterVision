@@ -1,4 +1,3 @@
-from turtle import width
 import numpy as np
 import cv2 as cv
 
@@ -21,9 +20,7 @@ height = round(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
 
 # 너비,높이 구하기
 
-
 # 한번 체크해보자.
-
 
 if not cap.isOpened():
     print("Camera open failed!")
@@ -35,22 +32,20 @@ fps = cap.get(cv.CAP_PROP_FPS)
 # 한 프레임당 시간을 구하기 위해 fps를 구한다.
 # 프레임은 초당 몇장의 사진을 찍는지를 의미한다.
 
-delay = round(1000/fps)
+delay = round(1000 / fps)
 
 # 1000으로 나누는 이유는 ms단위로 바꾸기 위해서이다.
-
 
 # 저장할 비디오 만들기
 outputVideo = cv.VideoWriter(
     "output.avi", fourcc, fps, (width, height))
-
-# mac에서는 isCOLOR_BGR2GRAY로 해야함
 
 if not outputVideo.isOpened():
     print("File open failed!")
     exit()
 
 flag = True
+
 beforeBrightnessAvgFrame = 0
 
 while True:
@@ -61,9 +56,16 @@ while True:
         exit()
 
     BrightnessAvgFrame = np.mean(frame)
+    print("BrightnessAvgFrame : ", BrightnessAvgFrame)
+
+    if flag:
+        # flag가 True일때는 그냥 저장. 최초 1회 처리
+        beforeBrightnessAvgFrame = BrightnessAvgFrame
+        flag = False
 
     # 현재 프레임이 직전 프레임보다 이미지 전체의 평균 밝기가 30 넘게 바뀔 경우
-    if abs(BrightnessAvgFrame - beforeBrightnessAvgFrame) >= 20:
+    if abs(BrightnessAvgFrame - beforeBrightnessAvgFrame) >= 30:
+        print("30 차이 발생")
         sec = 0
         # 3초간 반전시켜서 output.avi로 저장해주세요.
         while True:
@@ -71,21 +73,22 @@ while True:
 
             if not ret:
                 break
-            gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
-            outputVideo.write(~frame)
-            cv.imshow('frame', ~frame)
-            cv.waitKey(delay)
-            # 필요한지는 고민..
+            inversed = ~frame
+
+            outputVideo.write(inversed)
+            cv.imshow('frame', frame)
+
+            if cv.waitKey(delay) == 27:
+                break
 
             sec += 1
+
             if sec == 3:
                 break
     else:
-        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-        outputVideo.write(gray)
-        cv.imshow('frame', gray)
-        cv.waitKey(delay)
+        outputVideo.write(frame)
+        cv.imshow('frame', frame)
 
     if cv.waitKey(delay) == 27:
         break
