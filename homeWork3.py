@@ -50,8 +50,8 @@ if not outputVideo.isOpened():
     print("File open failed!")
     exit()
 
-flag = True
-beforeBrightnessAvgFrame = 0
+ret, frame = cap.read()
+beforeBrightnessAvgFrame = np.mean(frame)
 
 while True:
     ret, frame = cap.read()
@@ -61,6 +61,8 @@ while True:
         exit()
 
     BrightnessAvgFrame = np.mean(frame)
+
+    gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
     # 현재 프레임이 직전 프레임보다 이미지 전체의 평균 밝기가 30 넘게 바뀔 경우
     if abs(BrightnessAvgFrame - beforeBrightnessAvgFrame) >= 20:
@@ -74,21 +76,21 @@ while True:
             gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
             outputVideo.write(~frame)
-            cv.imshow('frame', ~frame)
             cv.waitKey(delay)
             # 필요한지는 고민..
 
             sec += 1
             if sec == 3:
                 break
+
     else:
-        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-        outputVideo.write(gray)
-        cv.imshow('frame', gray)
         cv.waitKey(delay)
+        outputVideo.write(gray)
 
     if cv.waitKey(delay) == 27:
         break
+
+    cv.imshow('frame', gray)
 
     beforeBrightnessAvgFrame = BrightnessAvgFrame
 
