@@ -1,5 +1,6 @@
 import numpy as np
 import cv2 as cv
+import time
 
 
 # 3. 웹캠을 사용하여 회색조(grayscale)로 동영상을 저장하되,
@@ -56,6 +57,7 @@ while True:
         exit()
 
     BrightnessAvgFrame = np.mean(frame)
+    # 평균 밝기 한번 찍어보기
     print("BrightnessAvgFrame : ", BrightnessAvgFrame)
 
     if flag:
@@ -68,6 +70,8 @@ while True:
         print("30 차이 발생")
         sec = 0
         # 3초간 반전시켜서 output.avi로 저장해주세요.
+        start = int(time.time())
+        print("start : ", start)
         while True:
             ret, frame = cap.read()
 
@@ -81,11 +85,12 @@ while True:
 
             if cv.waitKey(delay) == 27:
                 break
-
-            sec += 1
-
-            if sec == 3:
+            end = int(time.time())
+            if end - start > 3:
+                print("end : ", end)
+                print("rst : ", end - start)
                 break
+
     else:
         outputVideo.write(frame)
         cv.imshow('frame', frame)
