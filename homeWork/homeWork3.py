@@ -7,7 +7,7 @@ import time
 # 카메라로부터 들어오는 현재 프레임이 직전 프레임보다 이미지 전체의 평균 밝기가 30 넘게 바뀔 경우,
 # 그 시점부터 다음 3초간 반전시켜서 output.avi로 저장해주세요.
 
-fourcc = cv.VideoWriter_fourcc(*'DIVX')
+fourcc = cv.VideoWriter_fourcc(*'MJPG')
 
 # 동영상 저장을 위한 코덱 생성
 
@@ -39,7 +39,7 @@ delay = round(1000 / fps)
 
 # 저장할 비디오 만들기
 outputVideo = cv.VideoWriter(
-    "output.avi", fourcc, fps, (width, height))
+    "output.avi", fourcc, fps, (width, height),0)
 
 if not outputVideo.isOpened():
     print("File open failed!")
@@ -51,6 +51,7 @@ beforeBrightnessAvgFrame = 0
 
 while True:
     ret, frame = cap.read()
+
 
     if not ret:
         print("Frame read failed!")
@@ -65,6 +66,7 @@ while True:
         beforeBrightnessAvgFrame = BrightnessAvgFrame
         flag = False
 
+    frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     # 현재 프레임이 직전 프레임보다 이미지 전체의 평균 밝기가 30 넘게 바뀔 경우
     if abs(BrightnessAvgFrame - beforeBrightnessAvgFrame) >= 30:
         print("30 차이 발생")
@@ -77,7 +79,7 @@ while True:
 
             if not ret:
                 break
-
+            frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
             inversed = ~frame
 
             outputVideo.write(inversed)
@@ -90,6 +92,7 @@ while True:
                 print("end : ", end)
                 print("rst : ", end - start)
                 break
+            # grayscale 변환..
 
     else:
         outputVideo.write(frame)
@@ -100,5 +103,5 @@ while True:
 
     beforeBrightnessAvgFrame = BrightnessAvgFrame
 
-
+print("good end")
 cv.destroyAllWindows()
