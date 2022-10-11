@@ -65,7 +65,7 @@ while True:
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
     # 현재 프레임이 직전 프레임보다 이미지 전체의 평균 밝기가 30 넘게 바뀔 경우
-    if abs(BrightnessAvgFrame - beforeBrightnessAvgFrame) >= 20:
+    if abs(BrightnessAvgFrame - beforeBrightnessAvgFrame) >= 30:
         sec = 0
         # 3초간 반전시켜서 output.avi로 저장해주세요.
         while True:
