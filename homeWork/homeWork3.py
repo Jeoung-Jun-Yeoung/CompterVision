@@ -96,4 +96,5 @@ while True:
     beforeBrightnessAvgFrame = BrightnessAvgFrame
 
 
+# 맥에서 확인 필요!
 cv.destroyAllWindows()
