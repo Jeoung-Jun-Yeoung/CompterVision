@@ -39,7 +39,7 @@ delay = round(1000 / fps)
 
 # 저장할 비디오 만들기
 outputVideo = cv.VideoWriter(
-    "output.avi", fourcc, fps, (width, height),0)
+    "output.avi", fourcc, fps, (width, height), 0)
 
 if not outputVideo.isOpened():
     print("File open failed!")
@@ -51,7 +51,6 @@ beforeBrightnessAvgFrame = 0
 
 while True:
     ret, frame = cap.read()
-
 
     if not ret:
         print("Frame read failed!")
@@ -70,7 +69,6 @@ while True:
     # 현재 프레임이 직전 프레임보다 이미지 전체의 평균 밝기가 30 넘게 바뀔 경우
     if abs(BrightnessAvgFrame - beforeBrightnessAvgFrame) >= 30:
         print("30 차이 발생")
-        sec = 0
         # 3초간 반전시켜서 output.avi로 저장해주세요.
         start = int(time.time())
         print("start : ", start)
