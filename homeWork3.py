@@ -7,7 +7,7 @@ import cv2 as cv
 # 카메라로부터 들어오는 현재 프레임이 직전 프레임보다 이미지 전체의 평균 밝기가 30 넘게 바뀔 경우,
 # 그 시점부터 다음 3초간 반전시켜서 output.avi로 저장해주세요.
 
-fourcc = cv.VideoWriter_fourcc('M', 'J', 'P', 'G')
+fourcc = cv.VideoWriter_fourcc(*"DIVX")
 
 # 동영상 저장을 위한 코덱 생성
 

@@ -1,7 +1,7 @@
 import numpy as np
 import cv2 as cv
 
-cap = cv.VideoCapture(0)
+cap = cv.VideoCapture('computervison_video.mp4')
 
 if not cap.isOpened():
     print("Camera open failed!")
@@ -13,7 +13,7 @@ height = round(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
 fps = cap.get(cv.CAP_PROP_FPS)
 
 
-fourcc = cv.VideoWriter_fourcc('M', 'J', 'P', 'G')
+fourcc = cv.VideoWriter_fourcc(*'DIVX')
 delay = round(1000 / fps)
 
 outputVideo = cv.VideoWriter("test.avi", fourcc, fps, (width, height))
@@ -27,15 +27,12 @@ if not outputVideo.isOpened():
 while True:
     ret, frame = cap.read()
     if not ret:
-        print("Frame read failed!")
-        exit()
-
-    gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-
-    cv.imshow("frame", frame)
-    outputVideo.write(frame)
-    if cv.waitKey(delay) == 27:
         break
 
+    outputVideo.write(frame)
+    cv.imshow("frame", frame)
+
+    if cv.waitKey(delay) == 27:
+        break
 
 cv.destroyAllWindows()

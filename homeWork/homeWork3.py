@@ -7,12 +7,12 @@ import time
 # 카메라로부터 들어오는 현재 프레임이 직전 프레임보다 이미지 전체의 평균 밝기가 30 넘게 바뀔 경우,
 # 그 시점부터 다음 3초간 반전시켜서 output.avi로 저장해주세요.
 
-fourcc = cv.VideoWriter_fourcc('M', 'J', 'P', 'G')
+fourcc = cv.VideoWriter_fourcc(*'DIVX')
 
 # 동영상 저장을 위한 코덱 생성
 
 
-cap = cv.VideoCapture(0)
+cap = cv.VideoCapture('computervison_video.mp4')
 
 # web캠 가져오기
 
@@ -53,8 +53,7 @@ while True:
     ret, frame = cap.read()
 
     if not ret:
-        print("Frame read failed!")
-        exit()
+        break
 
     BrightnessAvgFrame = np.mean(frame)
     # 평균 밝기 한번 찍어보기
@@ -68,10 +67,8 @@ while True:
     # 현재 프레임이 직전 프레임보다 이미지 전체의 평균 밝기가 30 넘게 바뀔 경우
     if abs(BrightnessAvgFrame - beforeBrightnessAvgFrame) >= 30:
         print("30 차이 발생")
-        sec = 0
         # 3초간 반전시켜서 output.avi로 저장해주세요.
-        start = int(time.time())
-        print("start : ", start)
+        sec = 0
         while True:
             ret, frame = cap.read()
 
@@ -85,11 +82,9 @@ while True:
 
             if cv.waitKey(delay) == 27:
                 break
-            end = int(time.time())
-            if end - start > 3:
-                print("end : ", end)
-                print("rst : ", end - start)
+            if sec == 30:
                 break
+            sec += 1
 
     else:
         outputVideo.write(frame)
