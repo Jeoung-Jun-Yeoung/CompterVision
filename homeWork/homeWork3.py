@@ -77,7 +77,9 @@ while True:
 
             if not ret:
                 break
+
             frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
             inversed = ~frame
 
             outputVideo.write(inversed)
