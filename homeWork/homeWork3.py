@@ -68,17 +68,15 @@ while True:
     frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     # 현재 프레임이 직전 프레임보다 이미지 전체의 평균 밝기가 30 넘게 바뀔 경우
     if abs(BrightnessAvgFrame - beforeBrightnessAvgFrame) >= 30:
-        print("30 차이 발생")
         # 3초간 반전시켜서 output.avi로 저장해주세요.
         start = int(time.time())
-        print("start : ", start)
         while True:
             ret, frame = cap.read()
 
             if not ret:
                 break
 
-            frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+            # frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
             inversed = ~frame
 
@@ -88,11 +86,8 @@ while True:
             if cv.waitKey(delay) == 27:
                 break
             end = int(time.time())
-            if end - start > 3:
-                print("end : ", end)
-                print("rst : ", end - start)
+            if end - start > 3:  # 3초 차이 발생시
                 break
-            # grayscale 변환..
 
     else:
         outputVideo.write(frame)
