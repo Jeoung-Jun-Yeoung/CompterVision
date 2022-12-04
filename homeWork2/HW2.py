@@ -3,6 +3,8 @@ import cv2 as cv
 import random
 import math
 
+rst = []
+
 
 def sharp(img):
     for sigma in range(1, 6):
@@ -25,10 +27,10 @@ def sharp(img):
 
 def img_trim(x, y, w, h, img):
     img_tr = img[y:y + h, x: x + w]
-    cv.imshow('test', img_tr)
+    # cv.imshow('test', img_tr)
     hough_circles(img_tr)
 
-    cv.waitKey()
+    # cv.waitKey()
 
     return img_tr
 
@@ -62,9 +64,9 @@ def contours_basic():
             setLabel(src, pts, "TRI")
         if vtc == 4:
             setLabel(src, pts, "RECT")
-            print(f"사각형 pts{pts}")
+
             x, y, w, h = cv.boundingRect(pts)
-            print(f"사각형 좌표? {x, y, w, h}")
+            # print(f"사각형 좌표 {x, y, w, h}")
             img_trim(x, y, w, h, img)
 
         else:
@@ -78,7 +80,6 @@ def contours_basic():
     #     cv.drawContours(src, [contours[i]], 0, (0, 0, 255), 2)
     #     cv.imshow("src", src)
 
-    cv.imshow('img', img)
     cv.imshow('src', src)
     cv.waitKey()
     cv.destroyAllWindows()
@@ -89,21 +90,20 @@ def hough_circles(img):
     if img is None:
         print("error")
 
-    img = cv.medianBlur(img, 5)
-    cimg = cv.cvtColor(img, cv.COLOR_GRAY2BGR)
+    blurred = cv.blur(img, (3, 3))
 
-    circles = cv.HoughCircles(img,
-                              cv.HOUGH_GRADIENT, 1, 20, param1=200, param2=17, minRadius=10, maxRadius=20)
+    circles = cv.HoughCircles(blurred,
+                              cv.HOUGH_GRADIENT, 1, 30, param1=150, param2=20)
 
-    circles = np.uint16(np.around(circles))
-
-    print(len(circles[0]))
-
-    for i in circles[0, :]:
-        cv.circle(cimg, (i[0], i[1]), i[2], (0, 255, 0), 2)
+    print(f"check {len(circles[0])}")
+    rst.append(len(circles[0]))
 
 
 contours_basic()
+rst.sort()
+rst.reverse()
+for i in rst:
+    print(f"{i}")
 exit()
 # hough_circles()
 

@@ -1,2 +1,1 @@
-cv.imshow('img', img)
-    # cv.imshow('src', src)
+hough_circles(img_tr)
