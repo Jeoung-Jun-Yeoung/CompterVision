@@ -9,31 +9,6 @@ import matplotlib.pyplot as plt
 rst = []
 
 
-def hough_circles(img):
-
-    if img is None:
-        print("error")
-
-    blurred = cv.blur(img, (3, 3))
-
-    circles = cv.HoughCircles(blurred,
-                              cv.HOUGH_GRADIENT, 1, 20, param1=140, param2=20)
-
-    if circles is not None:
-        print(f"check {len(circles[0])}")
-        rst.append(len(circles[0]))
-
-
-def img_trim(x, y, w, h, img):
-    img_tr = img[y:y + h, x: x + w]
-
-    cv.imshow('test', img_tr)
-    cv.waitKey()
-    hough_circles(img_tr)
-
-    return img_tr
-
-
 def setLabel(img, pts, label):
 
     (x, y, w, h) = cv.boundingRect(pts)
@@ -43,8 +18,8 @@ def setLabel(img, pts, label):
     cv.putText(img, label, pt1, cv.FONT_HERSHEY_PLAIN, 1, (0, 0, 255))
 
 
-# 1,5,6,8,11pass
-path = "/Users/jeongjun-yeong/GitHub/CompterVision/homeWork2/hw2/case5/img5_11.png"
+# 5,6,8,11pass
+path = "/Users/jeongjun-yeong/GitHub/CompterVision/homeWork2/hw2/case5/img5_6.png"
 
 src = cv.imread(path, cv.IMREAD_COLOR)
 
@@ -68,13 +43,14 @@ def erode_dilate(img):
     dst5 = cv.dilate(dst5, None)
     dst5 = cv.dilate(dst5, None)
 
-    cv.imshow('dst1', dst1)
-    cv.imshow('dst2', dst2)
-    # cv.imshow('dst3', dst3)
-    # cv.imshow('dst4', dst4)
+    # cv.imshow('dst1', dst1)
+    # cv.imshow('dst2', dst2)
+    # # cv.imshow('dst3', dst3)
+    # # cv.imshow('dst4', dst4)
 
-    cv.imshow('dst5', dst5)
-
+    # cv.imshow('dst5', dst5)
+    global result
+    result = 0
     # 결과는 1, 3이 제일 깔끔..
 
     # dst4로 원추출..
@@ -96,38 +72,14 @@ def erode_dilate(img):
             if ratio > 0.60:
                 # 이부분을 잘라서 원찾기?
                 x, y, w, h = cv.boundingRect(pts)
-                print(f"주사위 원 좌표 {x, y, w, h}")
-                img_trim(x, y, w, h, dst5)
+                result += 1
+
                 setLabel(src_bin, pts, "CIR")
 
-    cv.imshow('src_bin', src_bin)
-    cv.waitKey()
-    cv.destroyAllWindows()
+    # cv.imshow('src_bin', src_bin)
+    # cv.waitKey()
+    # cv.destroyAllWindows()
 
 
 erode_dilate(img)
-
-print(rst)
-# def sharp(img):
-#     for sigma in range(1, 6):
-#         blurred = cv.GaussianBlur(img, (0, 0), sigma)
-
-#         alpha = 2.0
-#         dst = cv.addWeighted(img, 1 + alpha, blurred, -alpha, 0.0)
-
-#         # desc = "sigma: %d" % sigma
-#         # cv.putText(dst, desc, (10, 30), cv.FONT_HERSHEY_SIMPLEX,
-#         #            1.0, 255, 1, cv.LINE_AA)
-
-#         return dst
-
-
-# cv.imshow('img', sharp(img))
-
-# img = sharp(img)
-
-# ret, src_bin = cv.threshold(
-#     img, 70, 255, cv.THRESH_BINARY)  # type: ignore
-# cv.imshow('test', src_bin)
-# cv.waitKey()
-# cv.destroyAllWindows()
+print(result)

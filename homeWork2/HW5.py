@@ -2,21 +2,15 @@ import numpy as np
 import cv2 as cv
 import random
 import math
+import matplotlib.pyplot as plt
+
+# 7 , 11
 
 rst = []
 
 
-def img_trim(x, y, w, h, img):
-    img_tr = img[y:y + h, x: x + w]
-
-    cv.imshow('test', img_tr)
-    cv.waitKey()
-    hough_circles(img_tr)
-
-    return img_tr
-
-
 def setLabel(img, pts, label):
+
     (x, y, w, h) = cv.boundingRect(pts)
     pt1 = (x, y)
     pt2 = (x+w, y+h)
@@ -24,120 +18,54 @@ def setLabel(img, pts, label):
     cv.putText(img, label, pt1, cv.FONT_HERSHEY_PLAIN, 1, (0, 0, 255))
 
 
-# 7,8,9
-path = "/Users/jeongjun-yeong/GitHub/CompterVision/homeWork2/hw2/case5/img5_7.png"
+# 5,6,8,11pass
+path = "/Users/jeongjun-yeong/GitHub/CompterVision/homeWork2/hw2/case5/img5_11.png"
+
+src = cv.imread(path, cv.IMREAD_COLOR)
+
+if src is None:
+    print("src error")
+    exit()
+
+img = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
 
 
-def contours_basic(img):
-    src = cv.imread(
-        path, cv.IMREAD_COLOR)
+def erode_dilate(img):
 
-    if src is None:
-        print("error")
-    dst = img.copy()
+    ret, src_bin = cv.threshold(
+        img, 160, 255, cv.THRESH_BINARY_INV)
 
-    cv.imshow("img", img)
+    dst1 = cv.erode(src_bin, None)
+    dst2 = cv.dilate(src_bin, None)
+    dst5 = cv.dilate(dst2, None)
+    dst5 = cv.dilate(dst5, None)
+    dst5 = cv.dilate(dst5, None)
 
-    cv.waitKey()
+    global result
+    result = 0
 
-    # noise = np.zeros(gray.shape, np.int32)
-    # cv.randn(noise, 0, 5)
-    # cv.add(gray, noise, gray, dtype=cv.CV_8UC1)
-
-    # dst1 = cv.GaussianBlur(gray, (0, 0), 5)
-    # # dst1 = cv.bilateralFilter(gray, -1, 10, 5)
-
-    # ret, dst = cv.threshold(dst1, 127, 255, cv.THRESH_BINARY)
-
-    contours, hier = cv.findContours(dst, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
-    cv.imshow("test", dst)
-
-    cv.waitKey()
-
+    contours, hier = cv.findContours(dst5, cv.RETR_TREE, cv.CHAIN_APPROX_NONE)
     for pts in contours:
-        if cv.contourArea(pts) < 100:
+        if cv.contourArea(pts) < 50:
             continue
         approx = cv.approxPolyDP(pts, cv.arcLength(pts, True)*0.03, True)
         vtc = len(approx)
 
         if vtc == 3:
-            setLabel(src, pts, "TRI")
+            setLabel(src_bin, pts, "TRI")
         if vtc == 4:
-            setLabel(src, pts, "RECT")
-
-            x, y, w, h = cv.boundingRect(pts)
-            # print(f"사각형 좌표 {x, y, w, h}")
-            img_trim(x, y, w, h, dst)
-
+            setLabel(src_bin, pts, "RECT")
         else:
             lenth = cv.arcLength(pts, True)
             area = cv.contourArea(pts)
             ratio = 4. * math.pi * area / (lenth * lenth)
-            if ratio > 0.85:
-                setLabel(src, pts, "CIR")
+            if ratio > 0.60:
+                # 이부분을 잘라서 원찾기?
+                x, y, w, h = cv.boundingRect(pts)
+                result += 1
 
-    # for i in range(len(contours)):
-    #     cv.drawContours(src, [contours[i]], 0, (0, 0, 255), 2)
-    #     cv.imshow("src", src)
-
-    cv.imshow('src', src)
-    cv.waitKey()
-    cv.destroyAllWindows()
+                setLabel(src_bin, pts, "CIR")
 
 
-def hough_circles(img):
-
-    if img is None:
-        print("error")
-
-    blurred = cv.blur(img, (3, 3))
-
-    circles = cv.HoughCircles(blurred,
-                              cv.HOUGH_GRADIENT, 1, 25, param1=140, param2=20)
-
-    if circles is not None:
-        print(f"check {len(circles[0])}")
-        rst.append(len(circles[0]))
-# 1 6
-
-
-def color_split():
-    src = cv.imread(
-        path, cv.IMREAD_COLOR)
-    dst = cv.cvtColor(src, cv.COLOR_YCrCb2RGB)
-    dst2 = cv.cvtColor(dst, cv.COLOR_BGR2GRAY)
-    if src is None:
-        print("error")
-        return
-
-    noise = np.zeros(dst2.shape, np.int32)
-    cv.randn(noise, 0, 5)
-    cv.add(dst2, noise, dst2, dtype=cv.CV_8UC1)
-
-    dst3 = cv.subtract(dst2, 30)  # type: ignore
-
-    cv.imshow('test1', dst3)
-    cv.imshow('test2', dst2)
-
-    cv.waitKey()
-
-    # dst1 = cv.bilateralFilter(gray, -1, 10, 5)
-
-    ret, test = cv.threshold(dst3, 120, 255, cv.THRESH_BINARY)
-
-    # cv.imshow('bdst', bdst)
-    # cv.imshow('gdst', gdst)
-    # cv.imshow('rdst', rdst)
-    # cv.imshow('test2', test)
-    cv.imshow('test0', test)
-
-    cv.waitKey()
-    cv.destroyAllWindows()
-    return test
-
-
-img = color_split()
-
-cv.destroyAllWindows()
-contours_basic(img)
-exit()
+erode_dilate(img)
+print(result)

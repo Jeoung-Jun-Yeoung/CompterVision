@@ -13,23 +13,16 @@ def sharp(img):
         alpha = 2.0
         dst = cv.addWeighted(img, 1 + alpha, blurred, -alpha, 0.0)
 
-        # desc = "sigma: %d" % sigma
-        # cv.putText(dst, desc, (10, 30), cv.FONT_HERSHEY_SIMPLEX,
-        #            1.0, 255, 1, cv.LINE_AA)
-
         return dst
 
-# /Users/jeongjun-yeong/GitHub/CompterVision/homeWork2/hw2/case3/img3_3.png
-# /Users/jeongjun-yeong/GitHub/CompterVision/homeWork2/case2.jpg
-
-# /Users/jeongjun-yeong/GitHub/CompterVision/homeWork2/images/contours.bmp
+# 이미지 자르는 함수
+# https://pikabu.tistory.com/42 참고
 
 
 def img_trim(x, y, w, h, img):
     img_tr = img[y:y + h, x: x + w]
     # cv.imshow('test', img_tr)
     hough_circles(img_tr)
-
     # cv.waitKey()
 
     return img_tr
@@ -66,7 +59,7 @@ def contours_basic():
             setLabel(src, pts, "RECT")
 
             x, y, w, h = cv.boundingRect(pts)
-            # print(f"사각형 좌표 {x, y, w, h}")
+
             img_trim(x, y, w, h, img)
 
         else:
@@ -75,11 +68,6 @@ def contours_basic():
             ratio = 4. * math.pi * area / (lenth * lenth)
             if ratio > 0.85:
                 setLabel(src, pts, "CIR")
-
-    # for i in range(len(contours)):
-    #     cv.drawContours(src, [contours[i]], 0, (0, 0, 255), 2)
-    #     cv.imshow("src", src)
-
     cv.imshow('src', src)
     cv.waitKey()
     cv.destroyAllWindows()
@@ -95,23 +83,12 @@ def hough_circles(img):
     circles = cv.HoughCircles(blurred,
                               cv.HOUGH_GRADIENT, 1, 30, param1=150, param2=20)
 
-    print(f"check {len(circles[0])}")
     rst.append(len(circles[0]))
 
 
 contours_basic()
 rst.sort()
-rst.reverse()
+
 for i in rst:
     print(f"{i}")
 exit()
-# hough_circles()
-
-# img = cv.imread(
-#     "/Users/jeongjun-yeong/GitHub/CompterVision/homeWork2/case1.png", cv.IMREAD_GRAYSCALE)
-
-
-# if img is None:
-#     print("error")
-
-# cv.imshow('img', img)
