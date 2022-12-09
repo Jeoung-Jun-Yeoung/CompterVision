@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>only_one.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h2 id="%EC%97%90%EC%A7%80%EC%9D%98-%EA%B0%9C%EB%85%90">에지의 개념</h2>
+<ul>
+<li>한쪽 방향으로 픽셀값이 급격하게 바뀌는 부분</li>
+<li>객체 판별을 위한 전처리로 에지 검출을 사용</li>
+</ul>
+<h2 id="%EB%AF%B8%EB%B6%84">미분</h2>
+<ul>
+<li>에지를 찾기 위한 방법이 픽셀값을 <em>미분</em> 해서 변화율이 큰 픽셀을 찾는것</li>
+<li>미분하기 위해서는 영상이 2차원 평면위의 함수, 정수 단위 좌표에 나열되어 있는 이산함수라는 점을 기억할것</li>
+<li>보통 중앙차분으로 미분을 근사하는 방식이 오류가 적다.</li>
+</ul>
+<h2 id="%EA%B7%B8%EB%9E%98%EB%94%94%EC%96%B8%ED%8A%B8">그래디언트</h2>
+<ul>
+<li>2차원 공간이기에 x,y축 방향으로 각각 미분하고 이를 백터로 표현한것이 그래디언트.</li>
+<li>그래디언트 백터의 방향은 변화가 가장 큰 방향, 크기는 변화율의 세기</li>
+<li>maginitude()함수에 x,y각각 미분한 값을 넣어주면 그래디언트의 크기를 구할 수 있다.</li>
+<li>phase()함수에 x,y각각 미분한 값을 넣어주면 그래디언트의 방향을 구할 수 있음</li>
+</ul>
+<h2 id="%EC%97%90%EC%A7%80%EB%A5%BC-%EC%B0%BE%EB%8A%94-%EA%B8%B0%EB%B3%B8-%EB%B0%A9%EB%B2%95">에지를 찾는 기본 방법</h2>
+<ul>
+<li>그래디언트 크기가 특정값(임계값)보다 큰 위치를 찾는것</li>
+</ul>
+<h2 id="%EB%A7%88%EC%8A%A4%ED%81%AC%EA%B8%B0%EB%B0%98-%EC%97%90%EC%A7%80%EA%B2%80%EC%B6%9C">마스크기반 에지검출</h2>
+<ul>
+<li>가장 간단한 예제. 내 입맛대로 np.array()로 x축,y축 마스크를 만들고. cv.filter2D에 인자로 넣어서 마스크연산 수행</li>
+</ul>
+<h2 id="%EC%86%8C%EB%B2%A8%ED%95%84%ED%84%B0">소벨필터</h2>
+<ul>
+<li>소벨마스크로 영상을 미분한다.</li>
+</ul>
+<h2 id="%EC%83%A4%EB%A5%B4%ED%95%84%ED%84%B0">샤르필터</h2>
+<ul>
+<li>샤르마스크로 영상을 미분한다. 소벨보다 더 정확함</li>
+</ul>
+<h2 id="%EB%A7%88%EC%8A%A4%ED%81%AC-%EC%98%88%EC%A0%9C">마스크 예제</h2>
+<ol>
+<li>각각 x,y축 미분해준다.</li>
+<li>그래디언트 크기를 구함</li>
+</ol>
+<pre class="hljs"><code><div>dx = cv.Sobel(src,)
+dy = cv.Sobel(src,)
+
+fmag = cv.magnitude(dx,dy)
+<span class="hljs-comment"># fmag는 실수이기에 정수로 바꿔야 보여줄 수 있음</span>
+mag = np.uint8(np.clip(fmag,<span class="hljs-number">0</span>,<span class="hljs-number">255</span>))
+<span class="hljs-comment"># 정수로 바꾸는 과정</span>
+
+_, edge = cv.threshold(mag, <span class="hljs-number">150</span>, <span class="hljs-number">255</span>)
+<span class="hljs-comment"># 추출한 에지를 깔끔하게 이진화 하는 과정</span>
+</div></code></pre>
+<h2 id="%EC%BA%90%EB%8B%88-%EC%97%90%EC%A7%80-%EA%B2%80%EC%B6%9C%EA%B8%B0">캐니 에지 검출기</h2>
+<ul>
+<li>
+<p>그래디언트의 크기와 방향을 모두 고려. 좀더 정확하게 에지 검출가능. 에지는 서로 연결될 가능성이 높다는 점을 고려</p>
+</li>
+<li>
+<p>가우시안필터링(잡음제거), 그래디언트계산, 비최대억제(가장 큰 값만 선택), 이중임계값(2개로 판단)</p>
+</li>
+<li>
+<p>dst = cv.Canny(src, 50, 150) 으로 간단하게 사용가능</p>
+</li>
+</ul>
+<h2 id="%ED%97%88%ED%94%84%EB%B3%80%ED%99%98-%EC%A7%81%EC%84%A0-%EA%B2%80%EC%B6%9C">허프변환 직선 검출</h2>
+<ul>
+<li>
+<p>직선을 찾기 위한 방법. 직선이 많이 교차되는 좌표를 모두 찾고, 교차가 많이 되는곳을 그린다.</p>
+</li>
+<li>
+<p>먼저 에지를 찾고, 에지를 Hough_lines()에 인자로 넣어줘야 한다.</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>edge = cv.Canny()
+linse = cv.HoughLines(edge)
+</div></code></pre>
+<h2 id="%ED%99%95%EB%A5%A0%EC%A0%81-%ED%97%88%ED%94%84-%EB%B3%80%ED%99%98">확률적 허프 변환</h2>
+<ul>
+<li>확률적으로 직선검출하는 방법. 시작점, 끝점을 반환함.</li>
+</ul>
+<pre class="hljs"><code><div>edge = cv.Canny()
+linse = cv.HoughLinesP(edge)
+</div></code></pre>
+<h2 id="%ED%97%88%ED%94%84%EB%B3%80%ED%99%98-%EC%9B%90%EA%B2%80%EC%B6%9C">허프변환 원검출</h2>
+<ul>
+<li>원의 중심을 찾고, 적합한 반지름을 구해서 원을 그린다.</li>
+</ul>
+<pre class="hljs"><code><div>src = cv.imread()
+blurred = cv.blur(src)
+circles = cv.HoughCircles(blurred, cv.HOUGH_GRADIENT, <span class="hljs-number">1</span>, <span class="hljs-number">50</span>, param1= , param2=)
+</div></code></pre>
+<h2 id="%EC%BB%AC%EB%9F%AC%EC%98%81%EC%83%81">컬러영상</h2>
+<ul>
+<li>OPENCV에서는 BGR순서로 컬러 저장. imread()할때 IMREAD_COLOR로 설정해야 함. 1개 픽셀이 3가지 성분을 0~255범위 값을 가짐.</li>
+</ul>
+<h2 id="cvtcolor">cvtColor()</h2>
+<ul>
+<li>
+<p>다양하게 컬러영상으로 변환 가능</p>
+</li>
+<li>
+<p>BGR2GRAY : 컬러를 그레이스케일로. 성능에 좋음</p>
+</li>
+<li>
+<p>GRAY2BGR : 그레이스케일을 컬러로. 비율은 똑같이 계산</p>
+</li>
+<li>
+<p>BGR2HSV : 색상, 채도 명도로 색을 표현</p>
+</li>
+<li>
+<p>BGR2YCrCb : Y는 밝기, 휘도, Cr,Cb는 색상</p>
+</li>
+</ul>
+<h2 id="%EC%83%89%EC%83%81%EC%B1%84%EB%84%90-%EB%82%98%EB%88%84%EA%B8%B0">색상채널 나누기</h2>
+<pre class="hljs"><code><div>src = cv.imread(path, cv.IMREAD_COLOR)
+bgr = src.split()
+bgr[<span class="hljs-number">0</span>],bgr[<span class="hljs-number">1</span>],bgr[<span class="hljs-number">2</span>] <span class="hljs-comment"># 각각 B,G,R</span>
+</div></code></pre>
+<h2 id="%EC%BB%AC%EB%9F%AC%EC%98%81%EC%83%81-%ED%9E%88%EC%8A%A4%ED%86%A0%EA%B7%B8%EB%9E%A8">컬러영상 히스토그램</h2>
+<ul>
+<li>
+<p>컬러영상을 히스토그램 평활화 할때 각 색 성분이 연계되어 있어서 독립적으로 수행후 합치면 문제가 생김.</p>
+</li>
+<li>
+<p>YCrCb에서 Y성분만 히스토그램 평활화를 하고 합쳐야 함.</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>src = cv.imread() <span class="hljs-comment"># 읽기</span>
+ycrcb = cv.cvtColor(src, cv.COLOR_BGR2YCRCB) <span class="hljs-comment"># ycrcb로 변환</span>
+ycrcb = cv.split() <span class="hljs-comment"># Y, Cr, Cb로 분리</span>
+ycrcb[<span class="hljs-number">0</span>] = cv.equalizeHist(ycrcb[<span class="hljs-number">0</span>]) <span class="hljs-comment"># Y를 히스토그램 평활화</span>
+dst = cv.merge(ycrcb) <span class="hljs-comment"># 다시 합치기</span>
+</div></code></pre>
+<h2 id="%EC%83%89%EC%83%81%EB%B2%94%EC%9C%84%EC%A7%80%EC%A0%95-%EB%B6%84%ED%95%A0">색상범위지정 분할</h2>
+<ul>
+<li>inrage() 함수로 특정 범위안에 있는지 확인 가능</li>
+<li>inrage(src, low, high) -&gt; 있으면 true 리턴</li>
+</ul>
+<h2 id="%ED%9E%88%EC%8A%A4%ED%86%A0%EA%B7%B8%EB%9E%A8-%EC%97%AD%ED%88%AC%EC%98%81">히스토그램 역투영</h2>
+<ul>
+<li>HSV로 색을 골라내는것으로 한계가 있음</li>
+<li>미리 기준에서 히스토그램영상을 구해두고, 해당 컬러히스토그램으로 기준에서 영역을 찾는 방법</li>
+</ul>
+<pre class="hljs"><code><div>ref = imread()
+mask = imread()
+ref_ycrcb = imread()
+chanels[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
+cr_bins = <span class="hljs-number">128</span>
+cb_bins = <span class="hljs-number">128</span>
+
+histSize = [cr_bins, cb_bins]
+cr_range = [<span class="hljs-number">0</span>,<span class="hljs-number">256</span>]
+cb_range = [<span class="hljs-number">0</span>,<span class="hljs-number">256</span>]
+ranges = cr_range + cb_range
+hist = cv.calcHist([ref_ycrcb], chanel, mask, histSize, ranges)
+<span class="hljs-comment"># 기존 영상에서 마스크 부분에 해당하는 컬러 히스토그램 구하기</span>
+src = imread()
+srcycrcb = cvtColor(src, cv.IMREAD_BGR2YCRCB)
+backproj = cv.calcBackProject([srcycrcb], chanel, hist, ranges, <span class="hljs-number">1</span>)
+<span class="hljs-comment"># 역투영하기</span>
+</div></code></pre>
+<h2 id="%EC%9D%B4%EC%A7%84%ED%99%94">이진화</h2>
+<ul>
+<li>영상의 각 픽셀을 두개로 분류. 객체-배경, 관심-비관심. 기준이 되는 값이 임계값</li>
+</ul>
+<h2 id="threshold">threshold()</h2>
+<ul>
+<li>임계값을 통해 다양한 연산 지원</li>
+</ul>
+<pre class="hljs"><code><div>cv.threshold(src, low, high, cv.THERSH_BINARY)
+</div></code></pre>
+<h2 id="%EC%A0%81%EC%9D%91%ED%98%95-%EC%9D%B4%EC%A7%84%ED%99%94">적응형 이진화</h2>
+<ul>
+<li>영역별로 이진화를 한다. 그림자진 지역은 임계값을 다르게 해야 이진화가 잘 되기 때문이다.</li>
+<li>adaptiveThreshold()</li>
+</ul>
+<pre class="hljs"><code><div>dst = adaptiveThreshold(src, <span class="hljs-number">255</span>, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, blocksize, <span class="hljs-number">5</span>)
+</div></code></pre>
+<h2 id="%EB%AA%A8%ED%8F%B4%EB%A1%9C%EC%A7%80">모폴로지</h2>
+<ul>
+<li>
+<p>객체를 단순화 시키고, 잡음제거하는 용도로 사용.</p>
+</li>
+<li>
+<p>구조요소 : 마스크라 보면 됨. 해당 구조요소를 통해 모폴로지를 구현. getStructuringElement() 함수로 만듬</p>
+</li>
+</ul>
+<h2 id="%EC%B9%A8%EC%8B%9D">침식</h2>
+<ul>
+<li>객체영역의 외곽을 골고루 깎아냄. 구조요소에 완전히 포함되야 고정점을 채운다.</li>
+<li>erode()</li>
+</ul>
+<h2 id="%ED%8C%BD%EC%B0%BD">팽창</h2>
+<ul>
+<li>객채 외곽을 확대. 구조요소에 하나라도 포함되면 고정점을 채움</li>
+<li>dilate()</li>
+</ul>
+<pre class="hljs"><code><div>_,src_bin = cv.threshold(src, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>, cv.THRESH_BINARY | cv.THRESH_OTSU)
+dst1 = cv.erode(src_bin)
+dst2 = cv.dilate(src_bin)
+</div></code></pre>
+<h2 id="%EC%97%B4%EA%B8%B0%EC%99%80-%EB%8B%AB%EA%B8%B0">열기와 닫기</h2>
+<ul>
+<li>열기 : 침식 -&gt; 팽창, 작은크기의 객체 효과적 제거. 객체 영역을 확실히 구분</li>
+<li>닫기 : 팽창 -&gt; 침식, 내부의 작은 구멍을 매꿈. 객체간 이어짐을 확인하고 싶을때</li>
+<li>morphologyEx()함수에 인자로 가능</li>
+</ul>
+<pre class="hljs"><code><div>_,src_bin = cv.threshold(src, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>, cv.THRESH_BINARY | cv.THRESH_OTSU)
+dst1 = cv.morphologyEx(src_bin, cv.MORPH_OPEN, <span class="hljs-literal">None</span>)
+dst2 = cv.morphologyEx(src_bin, cv.MORPH_CLOSE, <span class="hljs-literal">None</span>)
+</div></code></pre>
+<h2 id="%EB%A0%88%EC%9D%B4%EB%B8%94%EB%A7%81">레이블링</h2>
+<ul>
+<li>객체,배경을 구분했으면 다시 각각의 객체를 구분해야함. 이게 레이블링!</li>
+<li>4방향 : 4방향끼리 연결되어 있으면, 8방향 : 8방향이 연결되어 있어야</li>
+</ul>
+<h2 id="connectedcomponents">connectedComponents()</h2>
+<pre class="hljs"><code><div>_,src_bin = cv.threshold(src, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>, cv.THRESH_BINARY | cv.THRESH_OTSU)
+cnt, label,stats,centroids = cv.connectedComponents(src_bin) <span class="hljs-comment"># src는 2진화가 수행된 영상</span>
+</div></code></pre>
+<h2 id="connectedcomponentswithstats">connectedComponentsWithStats()</h2>
+<ul>
+<li>추가적인 정보를 제공</li>
+</ul>
+<pre class="hljs"><code><div>cnt, label = cv.connectedComponentsWithStats(src) <span class="hljs-comment"># src는 2진화가 수행된 영상</span>
+</div></code></pre>
+<ul>
+<li>cnt는 개수, label은 각 객체 영역이 담김, stats (x,y,w,h,area), centroids(center_x, center_y)</li>
+</ul>
+<h2 id="%EC%99%B8%EA%B3%BD%EC%84%A0%EA%B2%80%EC%B6%9C">외곽선검출</h2>
+<ul>
+<li>객체의 외곽선은 객체 영역 픽셀중 배경과 인접한 일련의 픽셀</li>
+</ul>
+<h2 id="findcontours">findContours()</h2>
+<ul>
+<li>객체의 외곽선을 검출하는 함수</li>
+<li>검출모드에 따라 제공하는 기능이 다름.</li>
+<li>RETR_EXTERNAL, RETR_LIST, RETR_CCOMP, RETR_TREE</li>
+</ul>
+<pre class="hljs"><code><div>contours , _ cv.findContours(src, cv.RETR_LIST, cv.CHAIN_APPROX_NONE)
+<span class="hljs-comment"># 2번째 인자는 계층구조를 받는 자리임</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(contours)):
+    cv.drawContours(dst, contors)
+</div></code></pre>
+<h2 id="%EC%99%B8%EA%B3%BD%EC%84%A0-%EC%B2%98%EB%A6%AC%ED%95%A8%EC%88%98">외곽선 처리함수</h2>
+<ul>
+<li>boundingRect(), minAreaRect, minEnclosingCircle(), arcLength(), contourArea()</li>
+</ul>
+<h2 id="%EC%99%B8%EA%B3%BD%EC%84%A0-%EA%B7%BC%EC%82%AC%ED%99%94">외곽선 근사화</h2>
+<ul>
+<li>approxPolyDP()함수로 근사화 가능</li>
+<li>가장 멀리 떨어진 두 점을 찾고, 잇는다. 해당 선에서 가장 먼 점을 찾고 입실론 인자보다 크다면 다시 잇고 작으면 끝.</li>
+</ul>
+<pre class="hljs"><code><div>_,src_bin = cv.threshold(src, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>, cv.THRESH_BINARY | cv.THRESH_OTSU)
+contours , _ cv.findContours(src, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+
+<span class="hljs-keyword">for</span> pts <span class="hljs-keyword">in</span> contours:
+    <span class="hljs-keyword">if</span> cv.contours(pts) &lt; <span class="hljs-number">400</span>:
+    approx = cv.approxPolyDP(pts, cv.arcLengh(pts,<span class="hljs-literal">True</span>) * <span class="hljs-number">0.02</span>)
+    <span class="hljs-comment"># 근사화 하고 점의 개수를 가져온다.</span>
+    vtc = len(approx) <span class="hljs-comment">#점이 몇개 인지 판별 가능</span>
+</div></code></pre>
+<h2 id="%ED%85%9C%ED%94%8C%EB%A6%BF-%EB%A7%A4%EC%B9%AD">템플릿 매칭</h2>
+<ul>
+<li>찾고자 하는 부분영상이 있을때 입력 영상에서 해당 부분을 찾는다.</li>
+</ul>
+<pre class="hljs"><code><div>res = cv.matchTemplate(img, temp1, cv.TM_CCOEFF_NORMED)
+<span class="hljs-comment"># 매칭을 수행하고</span>
+res_norm = cv.matchTemplate(res, <span class="hljs-literal">None</span>, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>, cv.NORM_MINMAX, cv.CV_8U)
+<span class="hljs-comment"># 0~255사이 값으로 정규화를 해준다.</span>
+</div></code></pre>
+<h2 id="%EC%9C%A0%EC%82%AC-%ED%95%98%EB%A5%B4-%ED%95%84%ED%84%B0">유사 하르 필터</h2>
+<ul>
+<li>흑백 사각형이 서로 붙어있는 형태로 구성된 필터. 흰색은 더하고 검정은 빼줌</li>
+</ul>
+<h2 id="%EB%B9%84%EC%98%AC%EB%9D%BC-%EC%A1%B4%EC%8A%A4-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98">비올라 존스 알고리즘</h2>
+<ul>
+<li>유사하르 필터에서 얼굴검출에 효과적인것을 선별</li>
+<li>단계별로 필터의 개수를 늘려가며 판별한다.</li>
+</ul>
+<pre class="hljs"><code><div>classfier = cv.CascadeClassifier(<span class="hljs-string">'xml'</span>)
+faces = classifier.detectMultiScale(img)
+<span class="hljs-comment"># faces에는 x,y,w,h값이 담긴다.</span>
+</div></code></pre>
+<h2 id="hog%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%B3%B4%ED%96%89%EC%9E%90-%EA%B2%80%EC%B6%9C">HOG알고리즘 보행자 검출</h2>
+<ul>
+<li>그래디언트의 방향 히스토그램을 통해 보행자를 검출. 방향에 대한 값을 구하고, 몇도인지 히스토그램을 구함.</li>
+</ul>
+<pre class="hljs"><code><div>hog = cv.HOGDescriptor()
+hog.setSVMDetector(cv.HOGDescriptor_getDefaultPeopleDetector())
+detected, _ = hog.detectMultiScale(frame)
+</div></code></pre>
+<h2 id="qr%EC%BD%94%EB%93%9C">QR코드</h2>
+<ul>
+<li>코드내의 정사각형 3개를 찾아 투시변환</li>
+</ul>
+<pre class="hljs"><code><div>decetor = cv.QRCodeDector()
+info, points, _ = detector.detectAndDecode(frame)
+</div></code></pre>
+<h2 id="%ED%8A%B9%EC%A7%95-%EC%BD%94%EB%84%88-%ED%8A%B9%EC%A7%95%EC%A0%90">특징, 코너, 특징점</h2>
+<ul>
+<li>특징 : 영상으로 부터 추출할 수 있는 유용한 정보. 코너 : 에지가 급격히 바뀌는 부분. 특징점 : 한점의 형태로 표현할 수 있는 특징</li>
+</ul>
+<h2 id="%ED%95%B4%EB%A6%AC%EC%8A%A4-%EC%BD%94%EB%84%88-%EA%B2%80%EC%B6%9C">해리스 코너 검출</h2>
+<ul>
+<li>
+<p>특정위치에서 주변픽셀의 합을 구해서 중심과의 차이가 얼마나 큰지 확인 -&gt; 크면 코너가 된다.</p>
+</li>
+<li>
+<p>cornerHarris()함수를 사용. 리턴값이 임계값보다 크다면 코너로 판별 가능. 그러나 중복으로 비최대억제 수행이 요구됨</p>
+</li>
+</ul>
+<h2 id="fast-%EC%BD%94%EB%84%88-%EA%B2%80%EC%B6%9C">FAST 코너 검출</h2>
+<ul>
+<li>
+<p>빠르게 픽셀 값만 비교해서 코너 검출. 9개를 기준으로 삼는다.</p>
+</li>
+<li>
+<p>FAST(src,dst,임계값,비최대억제수행여부 = True)</p>
+</li>
+</ul>
+<h2 id="%ED%81%AC%EA%B8%B0%EB%B6%88%EB%B3%80-%ED%8A%B9%EC%A7%95%EC%A0%90-%EA%B2%80%EC%B6%9C">크기불변 특징점 검출</h2>
+<ul>
+<li>영상의 크기가 변경되면 코너는 더이상 검출되지 않을 가능성이 높다.</li>
+</ul>
+<h2 id="sift-%ED%81%AC%EA%B8%B0%EB%B6%88%EB%B3%80%ED%8A%B9%EC%A7%95%EC%A0%90%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98">SIFT 크기불변특징점알고리즘</h2>
+<ul>
+<li>옥타브내에서 DOG를 구하며 특징점을 찾는다.</li>
+</ul>
+<h2 id="orb">ORB</h2>
+<ul>
+<li>FAST를 이용하는데 영상 크기 변화에 강하게 대응할 수 있게 추가함.</li>
+<li>BRIEF로 기술자를 생성함.</li>
+<li>해밍거리 : 두 기술자 사이에 값이 다른 비트의 개수를 세는 방법</li>
+</ul>
+<h2 id="keypoint-class">keyPoint class</h2>
+<ul>
+<li>create() : 기술자 만들기 -&gt; detect() : 키포인트 검출 -&gt; compute() : 키포인트로 기술자 생성.</li>
+<li>FAST는 compute 사용 X, BRIEF는 detect 사용 X</li>
+</ul>
+<h2 id="%ED%8A%B9%EC%A7%95%EC%A0%90-%EB%A7%A4%EC%B9%AD">특징점 매칭</h2>
+<ul>
+<li>
+<p>두 영상에서 추출한 특징점 기술자를 비교해 비슷한 특징점을 찾는것.</p>
+</li>
+<li>
+<p>DescriptorMatcher 클래스가 있음. match()- 비슷한 기술자 하나를 찾음. knnMatch() - 비슷한 기술자 쌍 k개를 찾음. radiusMatch() - 지정 거리 안에 있는 기술자 모두를 찾음</p>
+</li>
+<li>
+<p>BFMatcher 클래스 : 가장 거리가 작은 기술자를 하나 찾는다.</p>
+</li>
+<li>
+<p>FlannBasedMathcer : 근사화된 최근방 이웃 알고리즘</p>
+</li>
+</ul>
+<pre class="hljs"><code><div>orb = cv.ORB_create()
+key1, des1 = orb.detectAndCompute(img1,<span class="hljs-literal">None</span>)
+key2, des2 = orb.detectAndCompute(img2,<span class="hljs-literal">None</span>)
+<span class="hljs-comment"># 각각 특징점을 찾고</span>
+
+matcher = cv.BFMatcher_create(cv.NORM_HAMMING) <span class="hljs-comment"># 기술자를 만들고</span>
+mathes = matcher.match(desc1, desc2) <span class="hljs-comment"># 매칭시켜봄</span>
+</div></code></pre>
+<h2 id="findhomograpy">findHomograpy()</h2>
+<ul>
+<li>특징점을 찾고, 서로 이동정보를 매칭하는 방식. 투시변환과 같은 연산.</li>
+</ul>
+<h2 id="%EC%98%81%EC%83%81-%EC%9D%B4%EC%96%B4-%EB%B6%99%EC%9D%B4%EA%B8%B0">영상 이어 붙이기</h2>
+<ul>
+<li>서로 일정 비율 이상으로 곂치는 영역이 있어야 함. 서로 같은 위치를 분간하도록 유효한 특징점이 있어야 함.</li>
+</ul>
+<pre class="hljs"><code><div>sticher = cv.Sticher_create() <span class="hljs-comment"># 붙이기 기술자 부르고</span>
+status, dst = sticher.stitch(imgs) <span class="hljs-comment"># 기술자가 붙여줌</span>
+</div></code></pre>
+<h2 id="%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D">머신러닝</h2>
+<ul>
+<li>머신러닝에 영상을 입력으로 줄때 대부분 특징정보를 추출하여 전달.</li>
+</ul>
+<h2 id="%EC%A7%80%EB%8F%84%ED%95%99%EC%8A%B5--%EB%B9%84%EC%A7%80%EB%8F%84%ED%95%99%EC%8A%B5">지도학습 &amp; 비지도학습</h2>
+<ul>
+<li>지도학습 : 정답을 알고 있음. 회귀 : 연속된 수치 예측. 분류 : 이산값을 결과로 출력</li>
+<li>비지도 학습 : 정답없이 데이터 차제만을 이용해서 분류</li>
+<li>오버피팅 : 전체를 학습하면 치우쳐서 학습하게 되어 새로운 입력에 대한 예측을 잘 못함</li>
+</ul>
+<h2 id="k%ED%8F%B4%EB%93%9C-%EA%B5%90%EC%B0%A8%EA%B2%80%EC%A6%9D">K폴드 교차검증</h2>
+<ul>
+<li>훈련데이터를 k개로 나누어 분할하여 학습과 검증을 반복</li>
+<li>훈련데이터의 잡음, 이상치를 고려해야 한다.</li>
+</ul>
+<h2 id="opencv-%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D-%ED%81%B4%EB%9E%98%EC%8A%A4">OpenCV 머신러닝 클래스</h2>
+<ul>
+<li>ml모듈에 구현되어있음</li>
+<li>train() : 훈련데이터가 어떻게 저장되어 있는지 명시 , predict() : 순수 가상함수로 상속받은 클래스가 재정의</li>
+</ul>
+<h2 id="%EC%B5%9C%EA%B7%BC%EC%A0%91%EC%9D%B4%EC%9B%83">최근접이웃</h2>
+<ul>
+<li>분류나 회귀에 사용되는 지도학습알고리즘</li>
+<li>인접(NN) : 새로운 입력에 대해서 가장 가까이에 있는 데이터와 같은 클래스로 지정</li>
+<li>K개 인접(KNN) : 새로운 입력에 대해서 인접지역에 가장 많은 데이터의 클래스로 지정</li>
+</ul>
+<h2 id="knearest">KNearest</h2>
+<ul>
+<li>knn에서 k를 1로 잡으면 nn이랑 같다.</li>
+<li>knearst객체를 생성하고, 속성을 설정한후, train()함수로 학습. 예측수행시 predict()보다 자체 제공인 findNearset()가 더 유용하기에 사용.</li>
+</ul>
+<pre class="hljs"><code><div>knn = cv.ml.KNearest_create()
+train_array = np.array()
+label_array = np.array()
+
+knn.train(train_array, cv.ml.ROW_SAMPLE, label_array) <span class="hljs-comment"># 학습시키기</span>
+
+<span class="hljs-comment"># 이후 각 픽셀에 대해서 정보를 가져 올 수 있다.</span>
+<span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> range(img.shape[<span class="hljs-number">0</span>]):
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(img.shape[<span class="hljs-number">1</span>]):
+        sample = np.array([[i,j]])
+
+        ret,res,_,_ = knn.findNearset(sample, k_values) <span class="hljs-comment"># 예측결과 가져오기</span>
+</div></code></pre>
+<h2 id="knn%EC%9D%84-%ED%86%B5%ED%95%9C-%ED%95%84%EA%B8%B0%EC%B2%B4-%EC%88%AB%EC%9E%90-%EC%9D%B8%EC%8B%9D">knn을 통한 필기체 숫자 인식</h2>
+<pre class="hljs"><code><div>
+cells = [np.hsplit(row, w//<span class="hljs-number">20</span>) <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> np.vsplit(digits, h//<span class="hljs-number">20</span>)]
+<span class="hljs-comment"># 20 * 20으로 쪽ㅐ기</span>
+
+train_img = cells.reshape(<span class="hljs-number">-1</span>,<span class="hljs-number">400</span>)
+<span class="hljs-comment"># 1 * 400늘리기</span>
+train_table = np.repeat(np.arrage(<span class="hljs-number">10</span>)m len(train_img) / <span class="hljs-number">10</span>)
+
+knn = cv.ml.KNearest_create()
+knn.train(train_img, cv.ml.ROW_SAMPLE, train_table)
+
+ret, res, _, _ = knn.findNearest(입력, <span class="hljs-number">3</span>)
+print(int(res[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]))
+</div></code></pre>
+
+</body>
+</html>

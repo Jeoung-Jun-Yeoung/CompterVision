@@ -154,7 +154,7 @@ def sobel_derivative():
 
 ##### 그래디언트 계산법
 
-- opencv는 2차원 백터의 x방향 좌표와 y방향 좌표를 이용하여ㅑ magnitude() 함수를
+- opencv는 2차원 백터의 x방향 좌표와 y방향 좌표를 이용하여 magnitude() 함수를 수행하면 그래디언트를 구할 수 있음.
 
 - magnitude() 함수의 입력으로 사용되는 x와 y는 CV_32F or CV_64F의 깊이를 사용하는 행렬 or 백터
 
@@ -335,7 +335,7 @@ def hough_lines():
 def hough_line_segments():
   src = cv.imread()
   edge = cv.Canny(src, 50, 150)
-  lines = cv.HoughLines(edge, 1, math.pi / 180, 160, minLineLength = 50, maxLineGroup=5)
+  lines = cv.HoughLinesP(edge, 1, math.pi / 180, 160, minLineLength = 50, maxLineGroup=5)
 
   dst = cv.cvtColor(edge, cv.COLOR_GRAY2BGR)
 
